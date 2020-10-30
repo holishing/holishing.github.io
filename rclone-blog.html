@@ -1,0 +1,347 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><base href="https://blog.ackhax.com/2018/12/29/scheduled-and-encrypted-backups-with-rclone-and-gdrive/"><style>body{margin-left:0;margin-right:0;margin-top:0}#bN015htcoyT__google-cache-hdr{background:#f8f9fa;font:13px arial,sans-serif;text-align:left;color:#202124;border:0;margin:0;border-bottom:1px solid #dadce0;line-height:16px;padding:16px 28px 24px 28px}#bN015htcoyT__google-cache-hdr *{display:inline;font:inherit;text-align:inherit;color:inherit;line-height:inherit;background:none;border:0;margin:0;padding:0;letter-spacing:0}#bN015htcoyT__google-cache-hdr a{text-decoration:none;color:#4b11a8}#bN015htcoyT__google-cache-hdr a:hover{text-decoration:underline}#bN015htcoyT__google-cache-hdr a:visited{color:#4b11a8}#bN015htcoyT__google-cache-hdr div{display:block;margin-top:4px}#bN015htcoyT__google-cache-hdr b{font-weight:bold;display:inline-block;direction:ltr}</style><div id="bN015htcoyT__google-cache-hdr"><div><span>這是 Google 對 <a href="https://blog.ackhax.com/2018/12/29/scheduled-and-encrypted-backups-with-rclone-and-gdrive/">https://blog.ackhax.com/2018/12/29/scheduled-and-encrypted-backups-with-rclone-and-gdrive/</a> 的快取。</span>&nbsp;<span>這是該網頁於 2020年8月18日 01:36:01 GMT 顯示時的快照。</span>&nbsp;<span>在此期間，<a href="https://blog.ackhax.com/2018/12/29/scheduled-and-encrypted-backups-with-rclone-and-gdrive/">目前網頁</a>可能已經變更。</span>&nbsp;<a href="http://support.google.com/websearch/bin/answer.py?hl=zh-TW&amp;p=cached&amp;answer=1687222"><span>瞭解更多資訊</span>.</a></div><div><span style="display:inline-block;margin-top:8px;margin-right:104px;white-space:nowrap"><span style="margin-right:28px"><a href="http://webcache.googleusercontent.com/search?q=cache:uBHxH-vGlU8J:https://blog.ackhax.com/2018/12/29/scheduled-and-encrypted-backups-with-rclone-and-gdrive/&amp;client=firefox-b-d&amp;hl=zh-TW&amp;gl=tw&amp;strip=0&amp;vwsrc=0"><span>完整版</span></a></span><span style="margin-right:28px"><span style="font-weight:bold">純文字版</span></span><span style="margin-right:28px"><a href="http://webcache.googleusercontent.com/search?q=cache:uBHxH-vGlU8J:https://blog.ackhax.com/2018/12/29/scheduled-and-encrypted-backups-with-rclone-and-gdrive/&amp;client=firefox-b-d&amp;hl=zh-TW&amp;gl=tw&amp;strip=0&amp;vwsrc=1"><span>檢視原始碼</span></a></span></span></div><span style="display:inline-block;margin-top:8px;color:#70757a"><span>提示：如要在這個網頁上快速尋找您所搜尋的字詞，請按下 <b>Ctrl+F</b> 鍵或 <b>⌘-F</b> 鍵 (Mac)，然後使用尋找列進行搜尋。</span></span></div><div style="position:relative; margin:8px;">
+<html lang="en-US" class="no-js no-svg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+<title>Scheduled and Encrypted Backups with Rclone and GDrive &#8211; AckHax</title>
+
+
+
+
+
+
+		
+		
+	
+
+
+
+
+
+
+
+
+
+ 
+
+<meta name="generator" content="WordPress 5.2.7" />
+
+
+
+
+
+		
+		
+
+
+<meta name="msapplication-TileImage" content="https://blog.ackhax.com/wp-content/uploads/2018/11/cropped-Hex_icon_with_flask_black.svg_-270x270.png" />
+
+<!-- BEGIN ExactMetrics v5.3.8 Universal Analytics - https://exactmetrics.com/ -->
+
+<!-- END ExactMetrics Universal Analytics -->
+		
+		</head>
+
+<body class="post-template-default single single-post postid-144 single-format-standard has-header-image no-header-image colors-dark">
+<div id="page" class="site">
+	<a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+
+	
+
+		<div class="custom-header">
+
+		<div class="custom-header-media">
+					</div>
+
+	<div class="site-branding">
+	<div class="container"><div class="row"><div class="col-md-12">
+
+		
+		<div class="site-branding-text">
+							<p class="site-title"><a href="https://blog.ackhax.com/" rel="home">AckHax</a></p>
+			
+							<p class="site-description">Computers, Programming, Security, Intelligence</p>
+					</div><!-- .site-branding-text -->
+
+	</div><!-- .wrap -->
+</div><!-- .site-branding -->
+</div>
+</div>
+</div><!-- .custom-header -->
+	
+
+					<div class="navigation-top">
+				<div class="container"><div class="row"><div class="col-md-12">
+				<div class="wrap">
+					
+	
+		Menu	
+
+	<div class="menu-nav-container"><ul id="top-menu" class="menu"><li id="menu-item-82" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-82"><a href="https://blog.ackhax.com">Home</a></li>
+<li id="menu-item-83" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-83"><a href="https://blog.ackhax.com/about-me/">About Me</a></li>
+</ul></div>
+<!-- #site-navigation -->
+				</div></div></div></div><!-- .wrap -->
+			</div><!-- .navigation-top -->
+				
+
+
+	<!-- #masthead -->
+	
+			
+	<div class="site-content-contain">
+	
+	<div id="content" class="site-content">
+		
+			
+<div class="container"><div class="row"><div class="col-md-8">
+
+			
+	<div class="post-thumbnail"></div>		
+
+		
+		<h1 class="entry-title">Scheduled and Encrypted Backups with Rclone and GDrive</h1>	
+
+	<div class="single-entry-meta">
+		<ul class="entry-meta"><li class="posted-on">Posted on <a href="https://blog.ackhax.com/2018/12/29/scheduled-and-encrypted-backups-with-rclone-and-gdrive/" rel="bookmark">December 29, 2018December 29, 2018</a></li><li class="byline"> by <a class="url fn n" href="https://blog.ackhax.com/author/admin/">admin</a></li><li class="cat-links">In <a href="https://blog.ackhax.com/category/homelab/" rel="category tag">Homelab</a></li></ul>	</div>
+
+	<div class="entry-content">
+		<h2>Outcomes</h2>
+<ul>
+<li>Create a Google Drive account for storage</li>
+<li>Sync/Copy files (encrypting them) from a local directory to GDrive using Rclone</li>
+<li>Create a script to run on a schedule</li>
+</ul>
+<h2>Requirements</h2>
+<ul>
+<li>Linux server (preferably Ubuntu) with access to file share</li>
+<li>Rclone https://rclone.org/</li>
+<li>Google Drive for Business (https://gsuite.google.com/products/drive/)</li>
+<li>Minimal bash scripting knowledge</li>
+</ul>
+<h2>How-To</h2>
+<h3>Google Drive</h3>
+<p>I won&#8217;t detail too much about Google Drive. The point is, you need access to a GDrive with enough space to store you backups.  Google Drive for business is an effective way to have cheap, unlimited storage. As of this writing, the cost is $10/mo/user.  They state that with less than 5 users, the storage limit is 1TB, though in practice this is not enforced. Keep in mind that this could change at any time and you may not want to rely on GDrive as a primary backup source. It can be very effective for short term uses such as migrating a file share, but for critical data you may want to pay for 5 users or have another storage provider.</p>
+<ol>
+<li>Get a Google Drive account</li>
+<li>Create a directory in the root Drive called &#8216;backups&#8217; (I will provide more detail later)</li>
+</ol>
+<h3>Google Drive API (Optional)</h3>
+<p>This step is optional, but when we set up rclone, we will have the option to provide our own API credentials. In my opinion, this should be done as then we don&#8217;t have to rely on rclone&#8217;s API limitations.</p>
+<ol>
+<li>Go to console.debelopers.google.com</li>
+<li>Create a new project (name it whatever you want)</li>
+<li>Click &#8220;Enable APIs and Services&#8221;</li>
+<li>Search for Drive</li>
+<li>Enable the API</li>
+<li>Click credentials</li>
+<li>Create a new OAuth ClientID
+<ul>
+<li>Select &#8220;Other&#8221;</li>
+</ul>
+</li>
+<li>The Client ID and Client Secret will be used when we configure rclone</li>
+</ol>
+<h3>Rclone</h3>
+<h4>Installing</h4>
+<p>Installing rclone is fairly simple with Linux. Use their provided install script to make it very simple: (As always, be<br />
+cautious when pasting executable commands and running foreign scripts on your machines!)</p>
+<p>curl https://rclone.org/install.sh | sudo bash</p>
+<p>&nbsp;</p>
+<h4>Configuration</h4>
+<p>Rclone configuration can be a little confusing and overwhelming. With experience you can understand more of what is going on, but I will just outline the basics. Rclone uses what they call &#8216;remotes&#8217; to define locations and actions for cloning files. We will be using multiple remotes. There will be one &#8216;regular&#8217; remote and multiple encrypted remotes for each directory we are copying. To create the primary remote, do the following</p>
+<p>&nbsp;</p>
+<p>Run:</p>
+<p>rclone config</p>
+<p>(This will prompt for many different options, answer them as follows:</p>
+<pre>n/r/c/s/q&gt; n          (new remote)
+name&gt; remote          (the name you want to use)
+Storage&gt; drive        (specify this will be a Google Drive remote)
+client_id&gt;            (Optional, paste in your client id from the google developer console)
+client_secret&gt;        (Optional, paste in your client secret from the google developer console)
+Project_number&gt;       (leave this blank)
+service_account_file&gt; (leave this blank)
+object_acl&gt;           (leave this blank)
+bucket_acl&gt;           (leave this blank)
+location&gt;             (choose the location closest to you)
+storage_class&gt;        (leave this blank)
+y/n&gt;</pre>
+<pre>This option is for the auto config. This is where it can get a little tricky. If you are running this on a graphical desktop, you should choose yes. It will open up a browser window and prompt for your google credentials. If you are not on a graphical desktop, you should select no and it will give you a link to use.  When I initially configured rclone on my headless server, I tried manual but the copying the code that you get proved to be impossible. No matter what, it would not paste properly into my terminal. If this is the case, you may need to do some tricky SSH port forwarding to use the auto config. Whichever you choose, follow the promptings and get your authorization code.</pre>
+<pre>y/n&gt; n        (this is for configuring a Team Drive, which we did not do. Enter no)
+y/e/d&gt; y      (assuming the configuration printing looks correct, enter yes)</pre>
+<p>If the configuration worked properly, running this command should list your one directory in your drive:</p>
+<p>&nbsp;</p>
+<p>Run:</p>
+<p>rclone lsd remote:</p>
+<p>1 2018-01-01 12:00:00 -1 backups</p>
+<p>&nbsp;</p>
+<p>The next step will be to create the encrypted remotes so that we can copy our data over in a safe format. In this example, I am creating an encrypted remote for my movies directory. I will be using a different remote for each directory so that I can keep things organized. This example will encrypt every file and directory name except the root name (movies). Having multiple remotes takes time to setup, but in my opinion it is a very effective way of understanding what is going on and keeping things organized.</p>
+<p>&nbsp;</p>
+<p>Again, run:</p>
+<p>rclone config</p>
+<pre>e/n/d/r/c/s/q&gt; n (new remote)
+name&gt; crypt-movies (name this whatever you like)
+Storage&gt; 8 (choose Encrypted remote)
+remote&gt; remote:backups/movies (specify where on the GDrive this will point. This location means in the backups/movies directory)
+filename_encryption&gt; 2 (standard encryption means file names)
+directory_name_encryption&gt; 1 (encrypt directory names too, this is why we put the remote in a subdirectory of backups)
+y/g&gt; y (enter a password for the encryption or use g to have rclone generate one)
+y/g/n&gt; y (highly recommended, enter a salt phrase for the encryption)
+y/e/d&gt; y (assuming the config looks right, enter yes)</pre>
+<p>Now we can run some simple tests to make sure everything is working correctly. Copy over a small file and view it with each remote to see if it is encrypted.</p>
+<p>&nbsp;</p>
+<p>Run:</p>
+<p>touch newfile.txt<br />
+rclone -q copy newfile.txt crypt-movies:<br />
+rclone -q ls crypt-movies:<br />
+        1 newfile.txt<br />
+rclone -q ls remote:backups/movies:<br />
+        1 lkjasdf83jhsdfg (some gibberish, encrypted file name!)</p>
+<h3></h3>
+<h3>Initial Backup</h3>
+<p>If you have a lot of data, you probably want to back it all up first before automating the backups. This way you can make sure that it all works properly first. There are a lot of options to rclone commands, and many commands that you can use for all of these tasks. It will list a few of the commands that I use and the options that I chose. For more details go to https://rclone.org/docs/</p>
+<h4></h4>
+<h4>Copy</h4>
+<p>Command: rclone copy<br />
+Example:  rclone --stats=5s --stats-log-level NOTICE copy /MEDIA/movies crypt-movies:<br />
+This command (I run it in a tmux session) will copy all files in /MEDIA/movies to the remote (backups/movies) and will encrypt all the file names. It will print out stats about the copy every five seconds so that you can see its progress.</p>
+<h3></h3>
+<h3>Automation</h3>
+<p>Automation of this task is quite simple. In this repository I provided a couple of simple files that I use. The effect of these files is that every night at midnight rclone attempts to do a copy of each of my remotes and writes the results to a log file. You can copy these files and modify them to your needs:</p>
+<ul>
+<li>rclone-cron.sh
+<ul>
+<li>This is the main script. The first few lines check if the process is already running and exits if it is. The next section simply executes rclone copy for each of my remotes, copying their directories on my MEDIA file share to the drive. The &#8211;min-age command makes it so that it doesn&#8217;t copy files that might be only partially copied to the file share at the time. (I have a lot of automated systems that write to the drive, and they might be running at midnight).</li>
+<li>If you create or copy this file, make sure to mark the script as executable with:
+<ul>
+<li>chmod a+x rclone-cron.sh</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>rclone-crontab
+<ul>
+<li>This file is what my crontab looks like. It simply executes the shell script every night at midnight. You can modify it or create a new one with either:
+<ul>
+<li>crontab rclone-crontab (this will write rclone-crontab to your user crontab)</li>
+<li>crontab -e (this will open your crontab for editting so you can add the line there)
+<ul>
+<li>For more information on crontabs see https://crontab.guru/</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>There you have it! Cron on your system will run your backup script every day at midnight! You can view the logs when you need to in order to make sure everything ran properly!</p>
+	
+	</div>
+
+	<ul class="tag-list"><li><a href="https://blog.ackhax.com/tag/automation/" rel="tag">automation</a></li><li><a href="https://blog.ackhax.com/tag/backup/" rel="tag">backup</a></li><li><a href="https://blog.ackhax.com/tag/backups/" rel="tag">backups</a></li><li><a href="https://blog.ackhax.com/tag/drive/" rel="tag">drive</a></li><li><a href="https://blog.ackhax.com/tag/encrypted/" rel="tag">encrypted</a></li><li><a href="https://blog.ackhax.com/tag/encryption/" rel="tag">encryption</a></li><li><a href="https://blog.ackhax.com/tag/fileshare/" rel="tag">fileshare</a></li><li><a href="https://blog.ackhax.com/tag/google-drive/" rel="tag">google drive</a></li><li><a href="https://blog.ackhax.com/tag/rclone/" rel="tag">rclone</a></li><li><a href="https://blog.ackhax.com/tag/storage/" rel="tag">storage</a></li></ul>	
+
+
+	
+	
+	
+		<h2 class="screen-reader-text">Post navigation</h2>
+		<div class="nav-links"><div class="nav-previous"><a href="https://blog.ackhax.com/2018/11/14/setting-up-a-postgresql-database-for-network-traffic-data/" rel="prev">Previous Post -  Previous post: Setting Up a PostgreSQL Database For Network Traffic Data</a></div></div>
+	
+<div id="comments" class="comments-area">
+
+	
+	
+		<div id="respond" class="comment-respond">
+		<h2 id="reply-title" class="comment-reply-title">Leave a Reply <a rel="nofollow" id="cancel-comment-reply-link" href="/2018/12/29/scheduled-and-encrypted-backups-with-rclone-and-gdrive/#respond" style="display:none;">Cancel reply</a></h2>			
+				<p class="comment-notes">Your email address will not be published. Required fields are marked *</p><p class="comment-form-comment">Comment </p><p class="comment-form-author">Name * </p>
+<p class="comment-form-email">Email * </p>
+<p class="comment-form-url">Website </p>
+<p class="form-submit"> 
+
+</p><p style="display: none;"></p><p style="display: none;"></p>			
+			</div><!-- #respond -->
+	<p class="akismet_comment_form_privacy_notice">This site uses Akismet to reduce spam. <a href="https://akismet.com/privacy/" target="_blank" rel="nofollow noopener">Learn how your comment data is processed</a>.</p>
+</div><!-- #comments --></div><div class="col-md-4"><div id="search-2" class="widget widget_search">
+
+
+	
+		Search for:
+	
+	
+	<i class="fa fas fa-search"></i>Search
+</div>		<div id="recent-posts-2" class="widget widget_recent_entries">		<h3 class="widget-title">Recent Posts</h3>		<ul>
+											<li>
+					<a href="https://blog.ackhax.com/2018/12/29/scheduled-and-encrypted-backups-with-rclone-and-gdrive/">Scheduled and Encrypted Backups with Rclone and GDrive</a>
+									</li>
+											<li>
+					<a href="https://blog.ackhax.com/2018/11/14/setting-up-a-postgresql-database-for-network-traffic-data/">Setting Up a PostgreSQL Database For Network Traffic Data</a>
+									</li>
+											<li>
+					<a href="https://blog.ackhax.com/2018/11/04/pcap-parsing-with-python-pcapng/">PCAP Parsing with python-pcapng</a>
+									</li>
+					</ul>
+		</div><div id="recent-comments-2" class="widget widget_recent_comments"><h3 class="widget-title">Recent Comments</h3><ul id="recentcomments"></ul></div><div id="archives-2" class="widget widget_archive"><h3 class="widget-title">Archives</h3>		<ul>
+				<li><a href='https://blog.ackhax.com/2018/12/'>December 2018</a></li>
+	<li><a href='https://blog.ackhax.com/2018/11/'>November 2018</a></li>
+		</ul>
+			</div><div id="categories-2" class="widget widget_categories"><h3 class="widget-title">Categories</h3>		<ul>
+				<li class="cat-item cat-item-27"><a href="https://blog.ackhax.com/category/homelab/">Homelab</a>
+</li>
+	<li class="cat-item cat-item-2"><a href="https://blog.ackhax.com/category/python/">Python</a>
+</li>
+		</ul>
+			</div><div id="meta-2" class="widget widget_meta"><h3 class="widget-title">Meta</h3>			<ul>
+						<li><a href="https://blog.ackhax.com/wp-login.php">Log in</a></li>
+			<li><a href="https://blog.ackhax.com/feed/">Entries RSS</a></li>
+			<li><a href="https://blog.ackhax.com/comments/feed/">Comments RSS</a></li>
+			<li><a href="https://wordpress.org/" title="Powered by WordPress, state-of-the-art semantic personal publishing platform.">WordPress.org</a></li>			</ul>
+			</div></div></div></div>
+
+		</div>
+	</div>
+</div>
+
+<div id="bottom-sidebars">
+	</div>
+
+
+	<div class="container">
+	<div class="row">
+	<div class="col-md-12">
+	
+					
+	 
+		<ul id="footer-menu" class="menu"><li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-82"><a href="https://blog.ackhax.com">Home</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-83"><a href="https://blog.ackhax.com/about-me/">About Me</a></li>
+</ul>	
+
+	<div id="site-info" class="footer-copyright">  
+  			
+		Copyright &copy; 
+		2020		AckHax.com. All rights reserved.	
+				
+		
+			
+			<p><a href="https://wordpress.org/">
+			Proudly powered by WordPress</a></p>		
+			
+		
+</div>
+			
+	</div></div></div><!-- .wrap -->
+<!-- #colophon -->
+		
+
+
+
+
+
+
+
+
+
+</body>
+</html>
